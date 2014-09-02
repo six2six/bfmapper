@@ -49,7 +49,7 @@ public class ReflectionUtils {
         try {
             return source == null ? null : (T) source;
         } catch (Exception e) {
-            throw new IllegalArgumentException("Cannot convert to type");
+            throw new IllegalArgumentException("Cannot convert to type", e);
         }
     }
     
@@ -68,7 +68,7 @@ public class ReflectionUtils {
             return (T) getPropertyUtilsBean().getProperty(bean, attribute);
         }catch (Exception e) {
             if (fail) {
-                throw new IllegalArgumentException("Error invoking get method for " + attribute);   
+                throw new IllegalArgumentException("Error invoking get method for " + attribute, e);   
             } else {
                 return null;
             }
@@ -83,12 +83,12 @@ public class ReflectionUtils {
             return (T) field.get(bean);
         } catch (NoSuchFieldException ex){
             if(fail) {
-                throw new IllegalArgumentException("Field " + fieldName + " doesn't exists" );
+                throw new IllegalArgumentException("Field " + fieldName + " doesn't exists", ex);
             } else {
                 return null;
             }
         }catch (Exception e) {
-            throw new IllegalArgumentException("Error getting field " + fieldName);
+            throw new IllegalArgumentException("Error getting field " + fieldName, e);
         }           
     }
     
@@ -103,7 +103,7 @@ public class ReflectionUtils {
         try {
             method = bean.getClass().getMethod(methodName, type);
         } catch (SecurityException e) {
-            throw new IllegalArgumentException("error calling method " + methodName);
+            throw new IllegalArgumentException("error calling method " + methodName, e);
         } catch (NoSuchMethodException e) {
             try {
                 if (wrapperToprimitiveMap.get(type) != null) {
@@ -112,7 +112,7 @@ public class ReflectionUtils {
                     method = bean.getClass().getMethod(methodName,  primitiveToWrapperMap.get(type));
                 }
             } catch (Exception e2) {
-                throw new IllegalArgumentException("error calling method " + methodName);
+                throw new IllegalArgumentException("error calling method " + methodName, e);
             }
             
         }
@@ -138,7 +138,7 @@ public class ReflectionUtils {
             getPropertyUtilsBean().setProperty(bean, attribute, value);
         } catch (Exception ex){
             if(fail) {
-                throw new IllegalArgumentException("Method for set attribute " + attribute);
+                throw new IllegalArgumentException("Method for set attribute " + attribute, ex);
             }
         }   
     }
@@ -167,7 +167,7 @@ public class ReflectionUtils {
                         targetBean = newInstance(BeanUtils.getPropertyDescriptor(lastBean.getClass(), propertyItem).getPropertyType());
                         ReflectionUtils.invokeSetter(lastBean, propertyItem, targetBean, true);                     
                     } catch (Exception e) {
-                        throw new IllegalArgumentException("Method " + propertyItem + " doesn't exists");
+                        throw new IllegalArgumentException("Method " + propertyItem + " doesn't exists", e);
                     }
                 }
             }
@@ -190,7 +190,7 @@ public class ReflectionUtils {
             try {
             	clazz = BeanUtils.getPropertyDescriptor(clazz, propertyItem).getPropertyType();
             } catch (Exception e) {
-                throw new IllegalArgumentException("Field " + propertyItem + " doesn't exists");
+                throw new IllegalArgumentException("Field " + propertyItem + " doesn't exists", e);
             }
         }
         return clazz;
