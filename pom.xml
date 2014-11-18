@@ -12,7 +12,13 @@
 		<url>https://github.com/VivaReal/bfmapper</url>
 		<connection>scm:git:git://github.com/VivaReal/bfmapper</connection>
 		<developerConnection>scm:git:git@github.com:VivaReal/bfmapper.git</developerConnection>
+		<tag>HEAD</tag>
 	</scm>
+	<distributionManagement>
+		<repository>
+			<id>vivareal</id>
+		</repository>
+	</distributionManagement>
 
 	<dependencies>
 		<dependency>
