@@ -8,6 +8,12 @@
 	<name>bfmapper</name>
 	<packaging>jar</packaging>
 
+	<scm>
+		<url>https://github.com/VivaReal/bfmapper</url>
+		<connection>scm:git:git://github.com/VivaReal/bfmapper</connection>
+		<developerConnection>scm:git:git@github.com:VivaReal/bfmapper.git</developerConnection>
+	</scm>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
