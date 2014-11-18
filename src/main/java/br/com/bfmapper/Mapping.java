@@ -278,7 +278,8 @@ public class Mapping implements Serializable {
 		
 		Class<?> sourceConverter = converter.getSourceClass();
 		Class<?> targetConverter = converter.getTargetClass();
-		return (sourceClass.equals(sourceConverter) && targetClass.equals(targetConverter)) || (targetClass.equals(sourceConverter) && sourceClass.equals(targetConverter));		
+		
+		return (sourceClass.getName().equals(sourceConverter.getName()) && targetClass.getName().equals(targetConverter.getName())) || (targetClass.getName().equals(sourceConverter.getName()) && sourceClass.getName().equals(targetConverter.getName()));
 	}
 	
 	private void evalEqualsProperties(Object source, Object target, Converter converter) {
