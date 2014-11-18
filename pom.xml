@@ -17,6 +17,7 @@
 	<distributionManagement>
 		<repository>
 			<id>vivareal</id>
+			<url>https://jenkins.vivareal.com/nexus/content/repositories/releases/</url>
 		</repository>
 	</distributionManagement>
 
