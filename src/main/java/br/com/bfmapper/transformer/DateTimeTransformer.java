@@ -10,7 +10,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import org.apache.commons.lang.ClassUtils;
+import br.com.bfmapper.util.ReflectionUtils;
 
 public class DateTimeTransformer implements SimpleTransformer {
 
@@ -37,55 +37,55 @@ public class DateTimeTransformer implements SimpleTransformer {
 			return null;
 		}
 		
-		if (ClassUtils.isAssignable(type, java.util.Date.class) && value instanceof java.sql.Date) {
+		if (ReflectionUtils.isAssignable(type, java.util.Date.class) && value instanceof java.sql.Date) {
 			returnValue = this.transformLongToDate(((java.sql.Date) value).getTime());
 		
-		} else if (ClassUtils.isAssignable(type, java.sql.Date.class) && value instanceof java.util.Date) {
+		} else if (ReflectionUtils.isAssignable(type, java.sql.Date.class) && value instanceof java.util.Date) {
 			returnValue = new java.sql.Date(this.transformDateToLong((java.util.Date) value));
 		
-		} else if (ClassUtils.isAssignable(type, java.util.Date.class) && value instanceof String) {
+		} else if (ReflectionUtils.isAssignable(type, java.util.Date.class) && value instanceof String) {
 			returnValue = this.transformStringToDate((String) value);
 		
-		} else if (ClassUtils.isAssignable(type, String.class) && value instanceof java.util.Date) {
+		} else if (ReflectionUtils.isAssignable(type, String.class) && value instanceof java.util.Date) {
 			returnValue = this.transformDateToString((java.util.Date) value);
 		
-		} else if (ClassUtils.isAssignable(type, Calendar.class) && value instanceof java.util.Date) {
+		} else if (ReflectionUtils.isAssignable(type, Calendar.class) && value instanceof java.util.Date) {
 			returnValue = this.transformDateToCalendar((java.util.Date) value);
 		
-		} else if (ClassUtils.isAssignable(type, java.util.Date.class) && value instanceof Calendar) {
+		} else if (ReflectionUtils.isAssignable(type, java.util.Date.class) && value instanceof Calendar) {
 			returnValue = this.transformCalendarToDate((Calendar) value);
 		
-		} else if (ClassUtils.isAssignable(type, Calendar.class) && value instanceof String) {
+		} else if (ReflectionUtils.isAssignable(type, Calendar.class) && value instanceof String) {
 			returnValue = this.transformDateToCalendar(this.transformStringToDate((String) value));
 		
-		} else if (ClassUtils.isAssignable(type, String.class) && value instanceof Calendar) {
+		} else if (ReflectionUtils.isAssignable(type, String.class) && value instanceof Calendar) {
 			returnValue = this.transformDateToString(this.transformCalendarToDate((Calendar) value));
 		
-		} else if (ClassUtils.isAssignable(type, java.util.Date.class) && value instanceof Long) {
+		} else if (ReflectionUtils.isAssignable(type, java.util.Date.class) && value instanceof Long) {
 			if (!this.longAsDate) {
 				returnValue = this.transformLongToDate((Long) value);
 			} else {
 				returnValue = this.transformStringToDate(value.toString());
 			}
-		} else if (ClassUtils.isAssignable(type, Long.class) && value instanceof java.util.Date) {
+		} else if (ReflectionUtils.isAssignable(type, Long.class) && value instanceof java.util.Date) {
 			if (!this.longAsDate) {
 				returnValue = this.transformDateToLong((java.util.Date) value);
 			} else {
 				returnValue = new Long(this.transformDateToString((java.util.Date) value));
 			}
-		} else if (ClassUtils.isAssignable(type, Calendar.class) && value instanceof Long) {
+		} else if (ReflectionUtils.isAssignable(type, Calendar.class) && value instanceof Long) {
 			if (!this.longAsDate) {
 				returnValue = this.transformDateToCalendar(this.transformLongToDate((Long) value));
 			} else {
 				returnValue = this.transformDateToCalendar(this.transformStringToDate(value.toString()));
 			}
-		} else if (ClassUtils.isAssignable(type, Long.class) && value instanceof Calendar) {
+		} else if (ReflectionUtils.isAssignable(type, Long.class) && value instanceof Calendar) {
 			if (!this.longAsDate) {
 				returnValue = this.transformDateToLong(this.transformCalendarToDate((Calendar) value));
 			} else {
 				returnValue = new Long(this.transformDateToString(this.transformCalendarToDate((Calendar) value)));
 			}
-		} else if (ClassUtils.isAssignable(type, XMLGregorianCalendar.class) && (value instanceof java.util.Date || value instanceof Calendar || value instanceof String)) {
+		} else if (ReflectionUtils.isAssignable(type, XMLGregorianCalendar.class) && (value instanceof java.util.Date || value instanceof Calendar || value instanceof String)) {
 		    
 		    if (value instanceof String) {
 		        value = this.transformStringToDate(value.toString());
@@ -99,12 +99,12 @@ public class DateTimeTransformer implements SimpleTransformer {
 				throw new IllegalArgumentException("Error parser java.util.Date value to XMLGregorianCalendar");
 			}
 			
-		} else if ((ClassUtils.isAssignable(type, java.util.Date.class) || ClassUtils.isAssignable(type, Calendar.class)) && value instanceof XMLGregorianCalendar) {
+		} else if ((ReflectionUtils.isAssignable(type, java.util.Date.class) || ReflectionUtils.isAssignable(type, Calendar.class)) && value instanceof XMLGregorianCalendar) {
 	        Calendar calendarResult = Calendar.getInstance();
 	        calendarResult.setTimeInMillis(((XMLGregorianCalendar) value).toGregorianCalendar().getTimeInMillis());
 	        returnValue = calendarResult;
 		    
-			if (ClassUtils.isAssignable(type, java.util.Date.class)) { 
+			if (ReflectionUtils.isAssignable(type, java.util.Date.class)) { 
 			    returnValue = this.transformCalendarToDate((Calendar) returnValue);
 			}
 		} else if (String.class.equals(type) && (value instanceof XMLGregorianCalendar)) {

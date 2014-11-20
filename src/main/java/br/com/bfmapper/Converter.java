@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.lang.ClassUtils;
-
 import br.com.bfmapper.transformer.Transformer;
 import br.com.bfmapper.util.ReflectionUtils;
 
@@ -185,7 +183,7 @@ public class Converter {
 		
 		public String getSourceProperty(Class<?> source) {
 			String property;
-			if (ClassUtils.isAssignable(source, Converter.this.sourceClass)) {
+			if (ReflectionUtils.isAssignable(source, Converter.this.sourceClass)) {
 				property = this.sourceProperty;
 			} else {
 				property = this.targetProperty;
@@ -195,7 +193,7 @@ public class Converter {
 
 		public String getTargetProperty(Class<?> source) {
 			String property;
-			if (ClassUtils.isAssignable(source, Converter.this.sourceClass)) {
+			if (ReflectionUtils.isAssignable(source, Converter.this.sourceClass)) {
 				property = this.targetProperty;
 			} else {
 				property = this.sourceProperty;
