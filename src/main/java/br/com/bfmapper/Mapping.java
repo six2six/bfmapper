@@ -186,13 +186,13 @@ public class Mapping implements Serializable {
 						    ReflectionUtils.invokeRecursiveSetter(target, targetProperty, value);    
                         } catch (Exception e) {
                             //hack to set collections without set method in chained properties
-                            if (ClassUtils.isAssignable(value.getClass(), Collection.class) && targetProperty.contains(".")) {
+                            if (ReflectionUtils.isAssignable(value.getClass(), Collection.class) && targetProperty.contains(".")) {
                                 Object chainedObjectTarget = ReflectionUtils.prepareInvokeRecursiveSetter(target, targetProperty, value);
                                 String lastProperty = targetProperty.substring(targetProperty.lastIndexOf(".") + 1);
                                 setCollectionValueFromReadMethod(BeanUtils.getPropertyDescriptor(chainedObjectTarget.getClass(), lastProperty), chainedObjectTarget, value);      
                             }
                         }
-					} else if (ClassUtils.isAssignable(value.getClass(), Collection.class)) {
+					} else if (ReflectionUtils.isAssignable(value.getClass(), Collection.class)) {
 						setCollectionValueFromReadMethod(targetPropertyDescriptor, target, value);
 						
 					}
@@ -205,7 +205,7 @@ public class Mapping implements Serializable {
 
 	private Collection<?> getInstanceFromCollectionType(Class<?> collectionClass) {
 		Class<?> collectionClassResult = null;
-		if (ClassUtils.isAssignable(collectionClass, Set.class)) {
+		if (ReflectionUtils.isAssignable(collectionClass, Set.class)) {
 			collectionClassResult = HashSet.class;
 		} else {
 			collectionClassResult = ArrayList.class;
@@ -313,7 +313,7 @@ public class Mapping implements Serializable {
 				if (value != null) {
 					if (targetPropertyDescriptor.getWriteMethod() != null) {
 						targetPropertyDescriptor.getWriteMethod().invoke(target, value);
-					} else if (ClassUtils.isAssignable(targetPropertyClass, Collection.class)) {
+					} else if (ReflectionUtils.isAssignable(targetPropertyClass, Collection.class)) {
 					    setCollectionValueFromReadMethod(targetPropertyDescriptor, target, value);
 					}
 				}
@@ -342,7 +342,7 @@ public class Mapping implements Serializable {
         Class<?> sourceClassAttribute = ReflectionUtils.invokeRecursiveType(source, sourceProperty);
 	    Class<?> targetClassAttribute = ReflectionUtils.invokeRecursiveType(target, targetProperty);
 		
-		if (ClassUtils.isAssignable(targetClassAttribute, Collection.class) && value instanceof Collection<?>) {
+		if (ReflectionUtils.isAssignable(targetClassAttribute, Collection.class) && value instanceof Collection<?>) {
 			value = this.resolveCollectionValue(source, target, sourceProperty, targetProperty, targetClassAttribute, value, transformer);
 		
 		} else if (transformer != null || ReflectionUtils.isSimpleType(sourceClassAttribute) || ReflectionUtils.isSimpleType(targetClassAttribute)) {
@@ -398,11 +398,11 @@ public class Mapping implements Serializable {
 			} else {
 				throw new IllegalArgumentException("Incorrect transformer instance");
 			}
-		} else if (ClassUtils.isAssignable(targetClassAttribute, Number.class) || value instanceof Number || ClassUtils.isAssignable(ClassUtils.primitiveToWrapper(targetClassAttribute), Number.class)) {
+		} else if (ReflectionUtils.isAssignable(targetClassAttribute, Number.class) || value instanceof Number || ReflectionUtils.isAssignable(ClassUtils.primitiveToWrapper(targetClassAttribute), Number.class)) {
 			/* use automatic transformer number */
 			value = new NumberTransformer().transform(value, targetClassAttribute);
 		
-		} else if (ClassUtils.isAssignable(targetClassAttribute, Enum.class) || value instanceof Enum) { 
+		} else if (ReflectionUtils.isAssignable(targetClassAttribute, Enum.class) || value instanceof Enum) { 
 			/* use automatic transformer enumeration */
 			value = new EnumTransformer().transform(value, targetClassAttribute);
 		}
@@ -412,7 +412,7 @@ public class Mapping implements Serializable {
 	
 	@SuppressWarnings("unchecked")
 	private Object resolveCollectionValue(Object source, Object target, String sourceProperty, String targetProperty, Class<?> targetClassAttribute, Object value, Transformer transformer) {
-		if (ClassUtils.isAssignable(targetClassAttribute, Collection.class) && value instanceof Collection<?>) {
+		if (ReflectionUtils.isAssignable(targetClassAttribute, Collection.class) && value instanceof Collection<?>) {
 			/* use automatic transformer collection */
 			Class<?> sourceCollectionItemClass = ReflectionUtils.getGenericClassFromRecursiveField(source, sourceProperty, 0);
 			Class<?> targetCollectionItemClass = ReflectionUtils.getGenericClassFromRecursiveField(target, targetProperty, 0);
@@ -454,7 +454,7 @@ public class Mapping implements Serializable {
 			} catch (Exception e) {
 				throw new IllegalArgumentException(e);
 			} 
-		} else if (ClassUtils.isAssignable(targetClassAttribute, Map.class) || value instanceof Map<?, ?>) {
+		} else if (ReflectionUtils.isAssignable(targetClassAttribute, Map.class) || value instanceof Map<?, ?>) {
 		    // TODO - implementar conversao de Map
 		    value = null;
 		} 

@@ -2,7 +2,7 @@ package br.com.bfmapper.transformer;
 
 import java.lang.reflect.Method;
 
-import org.apache.commons.lang.ClassUtils;
+import br.com.bfmapper.util.ReflectionUtils;
 
 public class EnumTransformer implements SimpleTransformer {
 	
@@ -29,7 +29,7 @@ public class EnumTransformer implements SimpleTransformer {
 					throw new IllegalArgumentException("Impossible convert Enum, string value invalid");
 				}
 			}
-		} else if (value.getClass().isEnum() && ClassUtils.isAssignable(type, String.class)) {
+		} else if (value.getClass().isEnum() && ReflectionUtils.isAssignable(type, String.class)) {
 			returnValue = value.toString();
 		} else {
 			throw new IllegalArgumentException("Incorrect type for transformer class");
