@@ -435,7 +435,7 @@ public class Mapping implements Serializable {
 						
 						targetCollection.add(this.applyConverter(converter, sourceItem, targetInstance));
 					}
-				} else if (ReflectionUtils.isSimpleType(targetCollectionItemClass)) {
+				} else if (ReflectionUtils.isSimpleType(targetCollectionItemClass) || ReflectionUtils.isSimpleType(sourceCollectionItemClass)) {
 					for (Object sourceItem : (Collection<Object>) sourceValue) {
 						targetCollection.add(this.resolveSimpleValue(source, target, targetCollectionItemClass, sourceItem, transformer));
 					}
