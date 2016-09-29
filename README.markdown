@@ -10,18 +10,20 @@ mvn clean install
 
 Use it like a maven dependency on your project
 
+```xml
  	  <dependency>
 	     <groupId>br.com.bfmapper</groupId>
 		 <artifactId>bfmapper</artifactId>
 		 <version>1.1.6</version>
 	   </dependency>
+```
 
 Usage:
 =========================================
 
 writing bean mapper rules
 
-
+```java
      public class StudentMappingRules implements RulesMapper {
 
       @Override
@@ -38,14 +40,18 @@ writing bean mapper rules
        }});
      }
     }
+```
 
 converting objects:
 
+```java
     Student student = new Mapping().apply(studentA).to(Student.class);
+```
 
 multiple applies
 
+```java
     Student student = new Mapping().apply(studentA).apply(carMappedPrevioslyToStudent).to(Student.class);
-
+```
 
 You can see more utilization on tests!
